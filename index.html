@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hendry Hendratno — ulong RPG Showcase</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#e8edf5;--ink-dim:#8b97ab;--muted:#6b7685;
+  --panel:#0d1117;--panel-2:#161b22;--line:rgba(255,255,255,.08);
+  --line-bright:rgba(255,255,255,.15);--gold:#f0bb4e;
+}
+body{background:var(--panel);color:var(--ink);font:400 14px/1.5 system-ui,sans-serif;min-height:100vh}
+a{color:inherit}
+/* header */
+.showcase-header{padding:32px 24px 24px;max-width:1200px;margin:0 auto;border-bottom:1px solid var(--line);margin-bottom:32px}
+.showcase-name{font-size:28px;font-weight:900;letter-spacing:-.5px;margin-bottom:4px}
+.showcase-nick{color:var(--gold);font-size:13px;font-weight:700;margin-bottom:8px}
+.showcase-meta{font-size:12px;color:var(--muted)}
+.showcase-meta a{color:var(--gold);opacity:.8;text-decoration:none}
+.showcase-meta a:hover{opacity:1}
+/* grid */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px;padding:0 24px 48px;max-width:1200px;margin:0 auto}
+/* card */
+.card{border-radius:14px;border:1px solid var(--line);background:var(--panel-2);overflow:hidden;position:relative;transition:border-color .2s}
+.card:hover{border-color:var(--line-bright)}
+.card-accent{height:3px;background:linear-gradient(90deg,var(--role),color-mix(in srgb,var(--role) 40%,transparent))}
+/* sprite */
+.sprite-stage{height:110px;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--role) 6%,transparent);position:relative;overflow:hidden}
+.sprite{position:relative;width:120px;height:120px}
+.head{position:absolute;left:38px;top:16px;width:42px;height:38px;border-radius:45% 45% 40% 40%;background:#f0c18e;border:3px solid #6a3d2b;z-index:4}
+.hair{position:absolute;left:33px;top:7px;width:52px;height:28px;border-radius:50% 50% 30% 30%;background:var(--hair);border:3px solid #33202a;z-index:5}
+.hair::after{content:"";position:absolute;right:3px;top:14px;width:12px;height:24px;background:var(--hair);border:3px solid #33202a;border-left:0;border-radius:0 0 12px 0}
+.eye{position:absolute;top:35px;width:5px;height:5px;background:#1d2430;border-radius:50%;z-index:7}
+.eye.left{left:51px}.eye.right{left:65px}
+.body{position:absolute;left:32px;top:54px;width:54px;height:52px;border-radius:10px 10px 8px 8px;background:var(--role);border:4px solid #1f2634;z-index:3}
+.cape{position:absolute;left:24px;top:54px;width:70px;height:70px;border-radius:10px 10px 28px 28px;background:color-mix(in srgb,var(--role) 42%,#0d1117);z-index:1;transform:skewX(-5deg)}
+.arm{position:absolute;top:65px;width:18px;height:44px;border-radius:9px;background:#f0c18e;border:3px solid #6a3d2b;z-index:2}
+.arm.left{left:19px;transform:rotate(18deg)}.arm.right{right:19px;transform:rotate(-18deg)}
+.leg{position:absolute;top:101px;width:20px;height:28px;border-radius:0 0 8px 8px;background:#2e3d57;border:3px solid #1f2634;z-index:2}
+.leg.left{left:35px}.leg.right{right:35px}
+.tool{position:absolute;z-index:8;color:var(--role)}
+.tool::before,.tool::after{content:"";position:absolute}
+.sword{right:5px;top:34px;width:10px;height:80px;background:#dce5ef;border:2px solid #6f7a8e;transform:rotate(36deg)}
+.sword::before{left:-12px;top:50px;width:34px;height:8px;background:#9a6a35}
+.wand{right:15px;top:18px;width:8px;height:88px;background:#8c6334;transform:rotate(-18deg)}
+.wand::before{left:-8px;top:-10px;width:24px;height:24px;border-radius:50%;background:currentColor;box-shadow:0 0 18px currentColor,0 0 36px currentColor}
+.bow{right:8px;top:36px;width:34px;height:76px;border:5px solid #9b6a39;border-left:0;border-radius:0 42px 42px 0}
+.bow::before{left:2px;top:-4px;width:2px;height:76px;background:#e7dcc0}
+.shield{left:5px;top:58px;width:34px;height:42px;border-radius:8px 8px 16px 16px;background:currentColor;border:4px solid #d8c27b}
+.book{right:2px;top:62px;width:42px;height:32px;border-radius:4px;background:#f1e2b3;border:4px solid currentColor;transform:rotate(-11deg)}
+.hammer{right:7px;top:30px;width:10px;height:82px;background:#8c6334;transform:rotate(-28deg)}
+.hammer::before{left:-18px;top:-7px;width:46px;height:24px;background:#c4ccd5;border:3px solid #69768a}
+.laptop{left:4px;top:78px;width:46px;height:30px;background:#9fb3ca;border:4px solid #364155;transform:rotate(10deg)}
+.laptop::before{left:-6px;top:27px;width:58px;height:8px;background:#dce5ef;border:2px solid #364155}
+.brush{right:8px;top:30px;width:7px;height:78px;background:#c8943a;border-radius:3px;transform:rotate(-22deg)}
+.brush::before{left:-6px;top:-10px;width:19px;height:22px;background:currentColor;border-radius:3px 3px 0 0}
+.brush::after{left:-1px;top:10px;width:9px;height:6px;background:#c8943a;border-radius:0 0 3px 3px}
+.stylus{right:10px;top:28px;width:6px;height:72px;background:#7a9ab0;border-radius:3px;transform:rotate(-16deg)}
+.stylus::before{left:-5px;top:-14px;width:16px;height:18px;background:#c4ccd5;clip-path:polygon(50% 0%,100% 35%,100% 100%,0% 100%,0% 35%)}
+.stylus::after{left:0px;top:65px;width:6px;height:12px;background:#5a7a9a;border-radius:0 0 4px 4px}
+.code-brush{right:6px;top:28px;width:8px;height:76px;background:#8c6334;border-radius:3px;transform:rotate(-20deg)}
+.code-brush::before{left:-7px;top:-12px;width:22px;height:20px;background:currentColor;border-radius:3px 3px 0 0}
+.code-brush::after{left:-12px;top:52px;width:10px;height:10px;border-radius:50%;border:3px solid currentColor}
+.blueprint{right:5px;top:40px;width:38px;height:30px;background:#c8d8e8;border:3px solid #6a7e94;border-radius:4px;transform:rotate(-12deg)}
+.blueprint::before{left:5px;top:4px;width:24px;height:3px;background:#6a7e94;box-shadow:0 7px 0 #6a7e94,0 14px 0 #6a7e94}
+.blueprint::after{left:-6px;top:-5px;width:8px;height:38px;background:#b0a080;border-radius:4px}
+.magnifier{right:4px;top:42px;width:30px;height:30px;border-radius:50%;border:5px solid #c4ccd5}
+.magnifier::before{right:-4px;bottom:-4px;width:5px;height:22px;background:#9a6a35;transform:rotate(45deg);border-radius:3px}
+.trap{right:8px;top:44px;width:32px;height:28px;border:4px solid currentColor;border-radius:4px}
+.trap::before{left:2px;top:-14px;width:24px;height:14px;border:4px solid currentColor;border-bottom:0;border-radius:4px 4px 0 0}
+.trap::after{left:10px;top:-20px;width:8px;height:8px;border-radius:50%;border:3px solid currentColor}
+.gauge{right:6px;top:46px;width:36px;height:22px;border:4px solid currentColor;border-bottom:0;border-radius:22px 22px 0 0}
+.gauge::before{left:14px;top:14px;width:3px;height:18px;background:currentColor;transform-origin:bottom center;transform:rotate(-35deg);border-radius:2px}
+.gauge::after{left:4px;top:0px;width:4px;height:4px;border-radius:50%;background:currentColor;box-shadow:20px 0 0 currentColor}
+.abacus{right:4px;top:42px;width:36px;height:36px;border:4px solid #9a6a35;border-radius:4px;transform:rotate(-8deg)}
+.abacus::before{left:4px;top:5px;width:24px;height:3px;background:#9a6a35;box-shadow:0 10px 0 #9a6a35,0 20px 0 #9a6a35}
+.abacus::after{left:0px;top:6px;width:5px;height:5px;border-radius:50%;background:currentColor;box-shadow:0 10px 0 currentColor,8px 4px 0 currentColor}
+.bar-chart{right:4px;top:44px;width:36px;height:36px;transform:rotate(-8deg)}
+.bar-chart::before{left:2px;bottom:0;width:8px;height:28px;background:currentColor;box-shadow:13px 10px 0 currentColor,26px 18px 0 currentColor}
+.bar-chart::after{left:0px;bottom:-4px;width:36px;height:3px;background:currentColor;border-radius:2px}
+.pipe{right:6px;top:36px;width:40px;height:16px;background:#7a9ab0;border:3px solid #4a6a8a;border-radius:8px;transform:rotate(-18deg)}
+.pipe::before{left:-6px;top:-12px;width:16px;height:16px;border:3px solid #4a6a8a;border-right:0;border-radius:8px 0 0 8px}
+.pipe::after{right:-8px;top:-4px;width:12px;height:12px;border:3px solid #4a6a8a;border-radius:50%}
+.flask{right:8px;top:36px;width:12px;height:38px;background:#c4ccd5;border:3px solid #69768a;border-radius:0 0 4px 4px;transform:rotate(-12deg)}
+.flask::before{left:-12px;top:18px;width:36px;height:28px;border-radius:4px 4px 10px 10px;border:3px solid #69768a;background:currentColor;opacity:.6}
+.flask::after{left:-3px;top:-12px;width:18px;height:14px;background:#c4ccd5;border:3px solid #69768a;border-bottom:0;border-radius:4px 4px 0 0}
+.circuit-wand{right:12px;top:18px;width:8px;height:88px;background:#7a9ab0;transform:rotate(-14deg);border-radius:3px}
+.circuit-wand::before{left:-12px;top:-12px;width:32px;height:32px;border-radius:4px;background:currentColor;box-shadow:0 0 20px currentColor,0 0 40px currentColor;opacity:.7}
+.circuit-wand::after{left:2px;top:20px;width:14px;height:3px;background:currentColor;box-shadow:0 12px 0 currentColor,-8px 24px 0 currentColor}
+.wrench{right:6px;top:30px;width:10px;height:76px;background:#9a9a9a;border-radius:5px;transform:rotate(-28deg)}
+.wrench::before{left:-12px;top:-6px;width:34px;height:18px;background:#9a9a9a;border-radius:9px}
+.wrench::after{left:-8px;top:62px;width:26px;height:18px;background:#9a9a9a;border-radius:9px}
+.chain{right:8px;top:36px;width:12px;height:12px;border-radius:50%;border:4px solid #7a9ab0}
+.chain::before{right:4px;top:8px;width:12px;height:12px;border-radius:50%;border:4px solid currentColor;box-shadow:0 20px 0 currentColor,16px 10px 0 currentColor,16px 30px 0 currentColor}
+.chain::after{right:-4px;top:50px;width:24px;height:3px;background:currentColor;border-radius:2px;transform:rotate(20deg)}
+.cloud-staff{right:12px;top:22px;width:8px;height:82px;background:#8c6334;transform:rotate(-12deg);border-radius:3px}
+.cloud-staff::before{left:-18px;top:-14px;width:44px;height:28px;border-radius:50% 50% 20px 20px;background:currentColor;box-shadow:0 0 16px currentColor}
+.cloud-staff::after{left:-6px;top:8px;width:20px;height:12px;background:currentColor;border-radius:50%;opacity:.5}
+.gear{right:8px;top:42px;width:34px;height:34px;border-radius:50%;border:5px solid currentColor}
+.gear::before{left:2px;top:-8px;width:5px;height:48px;background:currentColor}
+.gear::after{left:-8px;top:2px;width:48px;height:5px;background:currentColor}
+.cylinder{right:4px;top:42px;width:36px;height:10px;border-radius:50%;background:currentColor;border:3px solid #9a6a35}
+.cylinder::before{left:-3px;top:6px;width:36px;height:24px;background:currentColor;border:3px solid #9a6a35;border-top:0;border-radius:0 0 50% 50%}
+.cylinder::after{left:-3px;top:18px;width:36px;height:3px;background:#9a6a35;opacity:.5;box-shadow:0 8px 0 #9a6a35}
+.shield-hourglass{left:5px;top:52px;width:34px;height:42px;border-radius:8px 8px 16px 16px;border:4px solid currentColor}
+.shield-hourglass::before{left:7px;top:4px;width:12px;height:10px;background:currentColor;clip-path:polygon(0 0,100% 0,50% 100%)}
+.shield-hourglass::after{left:7px;top:20px;width:12px;height:10px;background:currentColor;clip-path:polygon(50% 0,100% 100%,0 100%)}
+.radar{right:6px;top:48px;width:32px;height:20px;border-radius:50% 50% 0 0;border:4px solid currentColor;border-bottom:0}
+.radar::before{left:8px;top:4px;width:12px;height:12px;border-radius:50%;background:currentColor}
+.radar::after{left:0px;top:18px;width:32px;height:3px;background:currentColor;border-radius:2px}
+.fortress{right:4px;top:46px;width:36px;height:30px;background:currentColor;border-radius:2px}
+.fortress::before{left:-3px;top:-12px;width:10px;height:14px;background:currentColor;box-shadow:14px 0 0 currentColor,28px 0 0 currentColor;border-radius:2px 2px 0 0}
+.fortress::after{left:6px;top:6px;width:22px;height:16px;background:#0d1117;border-radius:2px}
+.lockpick{right:8px;top:34px;width:6px;height:74px;background:#9a9a9a;border-radius:3px;transform:rotate(-22deg)}
+.lockpick::before{left:-8px;top:-8px;width:22px;height:16px;border:4px solid #9a9a9a;border-radius:50% 50% 0 0;border-bottom:0}
+.lockpick::after{left:6px;top:54px;width:10px;height:10px;border-radius:50%;border:3px solid currentColor}
+.law-book{right:2px;top:58px;width:44px;height:36px;border-radius:4px;background:#f1e2b3;border:4px solid currentColor;transform:rotate(-9deg)}
+.law-book::before{left:6px;top:4px;width:28px;height:3px;background:currentColor;opacity:.4;box-shadow:0 8px 0 currentColor,0 16px 0 currentColor}
+.law-book::after{left:4px;top:0px;width:4px;height:36px;background:currentColor;opacity:.3}
+.rune{right:4px;top:48px;width:34px;height:40px;border:4px solid currentColor;border-radius:4px;transform:rotate(-8deg)}
+.rune::before{left:8px;top:4px;width:14px;height:14px;border-radius:50%;border:3px solid currentColor}
+.rune::after{left:4px;top:22px;width:24px;height:3px;background:currentColor;box-shadow:0 8px 0 currentColor}
+.quill{right:8px;top:26px;width:6px;height:80px;background:#f1e2b3;border-radius:0 0 3px 3px;transform:rotate(-16deg)}
+.quill::before{left:-10px;top:-18px;width:26px;height:30px;background:currentColor;clip-path:polygon(50% 0%,100% 30%,50% 100%,0% 30%);opacity:.6}
+.quill::after{left:-2px;top:52px;width:10px;height:14px;background:#f1e2b3;clip-path:polygon(50% 100%,100% 0%,0% 0%)}
+.checklist{right:3px;top:46px;width:40px;height:38px;border-radius:4px;background:#c8d8e8;border:3px solid currentColor;transform:rotate(-8deg)}
+.checklist::before{left:6px;top:4px;width:16px;height:3px;background:currentColor;box-shadow:0 10px 0 currentColor,0 20px 0 currentColor}
+.checklist::after{left:6px;top:2px;width:6px;height:6px;border-radius:1px;border-right:3px solid currentColor;border-bottom:3px solid currentColor;transform:rotate(45deg) translateY(-3px)}
+.compass{right:6px;top:44px;width:34px;height:34px;border-radius:50%;border:4px solid currentColor}
+.compass::before{left:12px;top:-4px;width:6px;height:20px;background:currentColor;border-radius:3px;transform:rotate(25deg)}
+.compass::after{left:8px;top:14px;width:14px;height:14px;border-radius:50%;background:currentColor;opacity:.25}
+.palette{right:4px;top:46px;width:36px;height:32px;border-radius:50% 50% 40% 40%;border:4px solid currentColor;transform:rotate(-10deg)}
+.palette::before{left:4px;top:4px;width:6px;height:6px;border-radius:50%;background:currentColor;box-shadow:14px 0 0 currentColor,7px 12px 0 currentColor}
+.palette::after{left:-8px;top:-10px;width:8px;height:20px;background:#9a6a35;border-radius:4px;transform:rotate(-25deg)}
+.wireframe{right:3px;top:44px;width:38px;height:30px;border:3px solid currentColor;border-radius:4px;transform:rotate(-8deg)}
+.wireframe::before{left:5px;top:4px;width:12px;height:14px;border:2px solid currentColor;border-radius:2px;opacity:.6}
+.wireframe::after{left:22px;top:4px;width:10px;height:6px;background:currentColor;border-radius:2px;opacity:.4;box-shadow:0 10px 0 currentColor}
+.banner{right:8px;top:24px;width:8px;height:86px;background:#8c6334;border-radius:3px;transform:rotate(-10deg)}
+.banner::before{left:0px;top:-2px;width:36px;height:26px;background:currentColor;border-radius:0 4px 4px 0}
+.banner::after{left:2px;top:20px;width:30px;height:3px;background:rgba(0,0,0,.25)}
+.crown-staff{right:12px;top:20px;width:8px;height:86px;background:#8c6334;transform:rotate(-12deg);border-radius:3px}
+.crown-staff::before{left:-14px;top:-18px;width:36px;height:24px;background:currentColor;clip-path:polygon(0 100%,10% 40%,25% 65%,50% 0%,75% 65%,90% 40%,100% 100%);box-shadow:0 0 18px currentColor}
+.crown-staff::after{left:-10px;top:4px;width:28px;height:5px;background:currentColor;border-radius:2px}
+.crown-shield{left:5px;top:48px;width:36px;height:44px;border-radius:8px 8px 18px 18px;border:4px solid currentColor}
+.crown-shield::before{left:4px;top:-14px;width:24px;height:16px;background:currentColor;clip-path:polygon(0 100%,8% 35%,22% 60%,50% 0%,78% 60%,92% 35%,100% 100%)}
+.crown-shield::after{left:8px;top:10px;width:16px;height:18px;border:3px solid currentColor;border-radius:50% 50% 8px 8px;opacity:.5}
+/* card body */
+.card-body{padding:14px 16px 16px}
+.card-top-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.class-badge{font-size:9.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);padding:2px 6px;border-radius:4px;border:1px solid var(--line)}
+.tier-pill{font-size:9.5px;font-weight:900;padding:2px 7px;border-radius:4px;border:1px solid;letter-spacing:.5px}
+.card-title{font-size:16px;font-weight:900;margin-bottom:4px;letter-spacing:-.3px}
+.desc{font-size:11.5px;color:var(--muted);line-height:1.5;margin-bottom:10px}
+.skill-list{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px}
+.skill{display:inline-flex;align-items:center;gap:4px;padding:3px 8px 3px 7px;border-radius:5px;font-size:11px;font-weight:600;border:1px solid var(--line);color:var(--ink-dim);background:transparent;transition:all .15s}
+.skill.lv1{background:color-mix(in srgb,var(--role) 13%,transparent);border-color:color-mix(in srgb,var(--role) 60%,transparent);color:var(--ink)}
+.skill.lv2{background:color-mix(in srgb,var(--role) 22%,transparent);border-color:var(--role);color:var(--ink);box-shadow:0 0 6px color-mix(in srgb,var(--role) 30%,transparent)}
+.skill.lv3{background:color-mix(in srgb,var(--role) 32%,transparent);border-color:var(--role);color:var(--ink);box-shadow:0 0 12px color-mix(in srgb,var(--role) 40%,transparent),inset 0 0 0 1px color-mix(in srgb,var(--role) 20%,transparent)}
+.skill-lv-badge{font-size:8px;font-weight:900;letter-spacing:.4px;opacity:.8}
+.salary-row{display:flex;align-items:center;gap:6px;margin-top:8px;padding-top:8px;border-top:1px solid var(--line);flex-wrap:wrap}
+.salary-label{font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+.salary{font-size:13px;font-weight:900;color:var(--gold)}
+.salary-note{font-size:9px;color:var(--muted);width:100%;margin-top:2px;opacity:.75}
+/* lang switcher */
+.lang-switcher{display:inline-flex;border:1px solid rgba(255,255,255,.15);border-radius:8px;overflow:hidden;margin-top:10px}
+.lang-opt{padding:5px 12px;font:600 11px system-ui,sans-serif;color:var(--muted);background:transparent;border:none;cursor:pointer;transition:all .15s}
+.lang-opt:hover{color:var(--ink-dim);background:rgba(255,255,255,.05)}
+.lang-opt.active{color:var(--gold);background:rgba(240,187,78,.12)}
+.lang-opt+.lang-opt{border-left:1px solid rgba(255,255,255,.12)}
+/* porto */
+.porto-section{margin-top:8px;padding-top:8px;border-top:1px solid var(--line)}
+.porto-label{font-size:9.5px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.porto-link a{font-size:11px;color:color-mix(in srgb,var(--role) 90%,white);text-decoration:none;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;margin-bottom:2px}
+.porto-link a:hover{text-decoration:underline}
+/* footer */
+.showcase-footer{text-align:center;padding:24px;font-size:11px;color:var(--muted);border-top:1px solid var(--line)}
+.showcase-footer a{color:var(--gold);opacity:.7;text-decoration:none}
+.showcase-footer a:hover{opacity:1}
+</style>
+</head>
+<body>
+<div class="showcase-header">
+  <div class="showcase-name">Hendry Hendratno</div>
+  <div class="showcase-nick">secreal</div>
+  <div class="showcase-meta">
+    <a href="https://github.com/secreal" target="_blank" rel="noopener">github.com/secreal</a> · 
+    Generated by <a href="https://secreal.github.io/ulong-rpg/" target="_blank" rel="noopener">ulong RPG</a>
+  </div>
+  <div class="lang-switcher" id="showcase-lang">
+    <button class="lang-opt active" data-lang="en">EN</button>
+    <button class="lang-opt" data-lang="id">ID</button>
+  </div>
+</div>
+<div class="grid">
+
+  <article class="card" style="--role:#69a8f5;--hair:#355071">
+    <div class="card-accent"></div>
+    <div class="sprite-stage">
+      <div class="sprite">
+        <div class="hair"></div><div class="head"></div>
+        <div class="eye left"></div><div class="eye right"></div>
+        <div class="body"></div><div class="cape"></div>
+        <div class="arm left"></div><div class="arm right"></div>
+        <div class="leg left"></div><div class="leg right"></div>
+        <div class="tool brush"></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-top-row">
+        <span class="class-badge">Software Class</span>
+        <span class="tier-pill" style="border-color:#69a8f520;color:#69a8f5">T1</span>
+      </div>
+      <h2 class="card-title">Frontend Developer</h2>
+      <p class="desc" data-id="Archer UI yang menembakkan komponen, layout, dan interaksi ke browser." data-en="UI archer who fires components, layouts, and interactions at the browser.">UI archer who fires components, layouts, and interactions at the browser.</p>
+      <div class="skill-list"><span class="skill lv3">HTML<span class="skill-lv-badge">Lv 3</span></span><span class="skill lv3">CSS<span class="skill-lv-badge">Lv 3</span></span><span class="skill lv3">JavaScript<span class="skill-lv-badge">Lv 3</span></span><span class="skill lv3">React/Vue<span class="skill-lv-badge">Lv 3</span></span></div>
+      
+      <div class="salary-row">
+        <span class="salary-label">Salary</span>
+        <strong class="salary" data-id="Rp6–25 juta" data-en="$45,000–$115,000/yr">$45,000–$115,000/yr</strong>
+        <small class="salary-note" data-hide-on-id>Note: Indonesian rates differ significantly.</small>
+      </div>
+    </div>
+  </article>
+
+  <article class="card" style="--role:#b889f4;--hair:#3e3159">
+    <div class="card-accent"></div>
+    <div class="sprite-stage">
+      <div class="sprite">
+        <div class="hair"></div><div class="head"></div>
+        <div class="eye left"></div><div class="eye right"></div>
+        <div class="body"></div><div class="cape"></div>
+        <div class="arm left"></div><div class="arm right"></div>
+        <div class="leg left"></div><div class="leg right"></div>
+        <div class="tool wand"></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-top-row">
+        <span class="class-badge">Software Class</span>
+        <span class="tier-pill" style="border-color:#69a8f520;color:#69a8f5">T1</span>
+      </div>
+      <h2 class="card-title">Backend Developer</h2>
+      <p class="desc" data-id="Mage server yang menjaga API, business logic, database, dan autentikasi." data-en="Server mage who guards the API, business logic, database, and authentication.">Server mage who guards the API, business logic, database, and authentication.</p>
+      <div class="skill-list"><span class="skill lv3">API<span class="skill-lv-badge">Lv 3</span></span><span class="skill lv3">database<span class="skill-lv-badge">Lv 3</span></span><span class="skill lv3">auth<span class="skill-lv-badge">Lv 3</span></span><span class="skill lv3">queue<span class="skill-lv-badge">Lv 3</span></span><span class="skill lv3">caching<span class="skill-lv-badge">Lv 3</span></span></div>
+      
+      <div class="salary-row">
+        <span class="salary-label">Salary</span>
+        <strong class="salary" data-id="Rp7–30 juta" data-en="$50,000–$125,000/yr">$50,000–$125,000/yr</strong>
+        <small class="salary-note" data-hide-on-id>Note: Indonesian rates differ significantly.</small>
+      </div>
+    </div>
+  </article>
+
+  <article class="card" style="--role:#80c86a;--hair:#314d36">
+    <div class="card-accent"></div>
+    <div class="sprite-stage">
+      <div class="sprite">
+        <div class="hair"></div><div class="head"></div>
+        <div class="eye left"></div><div class="eye right"></div>
+        <div class="body"></div><div class="cape"></div>
+        <div class="arm left"></div><div class="arm right"></div>
+        <div class="leg left"></div><div class="leg right"></div>
+        <div class="tool stylus"></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-top-row">
+        <span class="class-badge">Software Class</span>
+        <span class="tier-pill" style="border-color:#69a8f520;color:#69a8f5">T1</span>
+      </div>
+      <h2 class="card-title">Mobile Developer</h2>
+      <p class="desc" data-id="Petualang app yang membawa produk ke Android dan iOS." data-en="App adventurer who brings the product to Android and iOS.">App adventurer who brings the product to Android and iOS.</p>
+      <div class="skill-list"><span class="skill lv3">Kotlin<span class="skill-lv-badge">Lv 3</span></span><span class="skill lv3">Swift<span class="skill-lv-badge">Lv 3</span></span><span class="skill lv3">Flutter<span class="skill-lv-badge">Lv 3</span></span><span class="skill lv3">React Native<span class="skill-lv-badge">Lv 3</span></span></div>
+      
+      <div class="salary-row">
+        <span class="salary-label">Salary</span>
+        <strong class="salary" data-id="Rp7–30 juta" data-en="$50,000–$120,000/yr">$50,000–$120,000/yr</strong>
+        <small class="salary-note" data-hide-on-id>Note: Indonesian rates differ significantly.</small>
+      </div>
+    </div>
+  </article>
+
+  <article class="card" style="--role:#62d8d2;--hair:#2e4f54">
+    <div class="card-accent"></div>
+    <div class="sprite-stage">
+      <div class="sprite">
+        <div class="hair"></div><div class="head"></div>
+        <div class="eye left"></div><div class="eye right"></div>
+        <div class="body"></div><div class="cape"></div>
+        <div class="arm left"></div><div class="arm right"></div>
+        <div class="leg left"></div><div class="leg right"></div>
+        <div class="tool code-brush"></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="card-top-row">
+        <span class="class-badge">Software Class</span>
+        <span class="tier-pill" style="border-color:#b889f420;color:#b889f4">T2</span>
+      </div>
+      <h2 class="card-title">Fullstack Developer</h2>
+      <p class="desc" data-id="Hybrid class yang bisa berpindah dari client ke server dalam satu party." data-en="Hybrid class that can shift from client to server within a single party.">Hybrid class that can shift from client to server within a single party.</p>
+      <div class="skill-list"><span class="skill lv3">Frontend<span class="skill-lv-badge">Lv 3</span></span><span class="skill lv3">backend<span class="skill-lv-badge">Lv 3</span></span><span class="skill lv3">SQL<span class="skill-lv-badge">Lv 3</span></span><span class="skill lv3">deployment<span class="skill-lv-badge">Lv 3</span></span></div>
+      
+      <div class="salary-row">
+        <span class="salary-label">Salary</span>
+        <strong class="salary" data-id="Rp8–35 juta" data-en="$48,000–$120,000/yr">$48,000–$120,000/yr</strong>
+        <small class="salary-note" data-hide-on-id>Note: Indonesian rates differ significantly.</small>
+      </div>
+    </div>
+  </article>
+</div>
+<div class="showcase-footer">
+  © secreal 2026 · <a href="https://secreal.github.io/ulong-rpg/" target="_blank" rel="noopener">ulong RPG</a>
+</div>
+<script>
+(function(){
+  var cur="en";
+  var switcher=document.getElementById("showcase-lang");
+  var opts=switcher.querySelectorAll(".lang-opt");
+  var els=document.querySelectorAll("[data-id][data-en]");
+  var notes=document.querySelectorAll("[data-hide-on-id]");
+  function apply(lang){
+    cur=lang;
+    els.forEach(function(el){el.textContent=el.dataset[lang]||el.textContent;});
+    notes.forEach(function(n){n.style.display=lang==="en"?"":"none";});
+    opts.forEach(function(b){b.classList.toggle("active",b.dataset.lang===lang);});
+    document.documentElement.lang=lang;
+  }
+  switcher.addEventListener("click",function(e){
+    var b=e.target.closest(".lang-opt");
+    if(b&&b.dataset.lang!==cur)apply(b.dataset.lang);
+  });
+  apply("en");
+})();
+</script>
+</body>
+</html>
